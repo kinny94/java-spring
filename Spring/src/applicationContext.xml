@@ -7,6 +7,9 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- load the properties file -->
+    <context:property-placeholder location="classpath:sport.properties"/>
+
     <!-- Define your beans here -->
     <bean id="myFortune" class="com.spring.springdemo.HappyFortuneService"></bean>
 
@@ -17,8 +20,8 @@
     <bean id="myCricketCoach" class="com.spring.springdemo.CricketCoach">
         <property name="fortuneService" ref="myFortune"></property> <!-- This will call setFortuneService -->
         <!-- inject literal values -->
-        <property name="emailAddress" value="test@test.com"></property>
-        <property name="team" value="Sunrisers Hyderabad" />
+        <property name="emailAddress" value="${foo.email}"></property>
+        <property name="team" value="${foo.team}" />
     </bean>
     
 </beans>
