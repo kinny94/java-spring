@@ -16,6 +16,9 @@
 
     <bean id="myCricketCoach" class="com.spring.springdemo.CricketCoach">
         <property name="fortuneService" ref="myFortune"></property> <!-- This will call setFortuneService -->
+        <!-- inject literal values -->
+        <property name="emailAddress" value="test@test.com"></property>
+        <property name="team" value="Sunrisers Hyderabad" />
     </bean>
     
 </beans>
