@@ -1,0 +1,15 @@
+Singleton
+Spring container creates only one instance of the bean, by default. It is cached in memory. All request foe the bean will return a shared reference to the same bean.
+
+Spring bean scopes
+* singleton - creates a single shared instance of the bean.
+* prototype - creates a new bean instance for each container request.
+* request - scoped to an HTTP request. Only used for web apps.
+* session - scoped to an HTTP session. Only used for web apps.
+* global-session - scoped to a global HTTP session. Only for web apps.
+
+Bean Lifecycle
+
+Container start ==> Bean Instantiated ==> DI ==> Internal Spring processing ==> Your custom init method ==> Bean ready for use ==> your custom destroy method ==> Stop
+
+You can add custom code during bean initialization. You can add custom code during bean destruction as well. These are called hooks.
