@@ -14,3 +14,13 @@ Constructor injection
 * Define the dependency interface or class
 * Create a constructor in your class for injections
 * Configure the dependency injection with @Autowired Annotation
+
+Setter Injection
+Inject dependency using setter methods on our class
+* Create a setter method for injections
+* Configure the dependency using the Autowired annotation
+
+Method Injection
+Inject dependencies by calling any method in our class
+
+Field Injection - Inject dependency by setting the field values on your class directly
