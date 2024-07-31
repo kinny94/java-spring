@@ -1,4 +1,4 @@
-package com.dependency.demo;
+package com.custom.util;
 
 import org.springframework.stereotype.Component;
 
