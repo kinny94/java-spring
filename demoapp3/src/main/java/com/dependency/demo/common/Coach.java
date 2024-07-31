@@ -1,4 +1,4 @@
-package com.custom.util;
+package com.dependency.demo.common;
 
 public interface Coach {
     String getDailyWorkout();
