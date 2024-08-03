@@ -17,7 +17,7 @@ public class DemoController {
     }
 
     @Autowired
-    public void setCoach(@Qualifier("baseballCoach") Coach coach) {
+    public void setCoach(Coach coach) {
         myCoach = coach;
     }
 
@@ -25,5 +25,4 @@ public class DemoController {
     public String getDailyWorkout() {
          return myCoach.getDailyWorkout();
     }
-
 }
