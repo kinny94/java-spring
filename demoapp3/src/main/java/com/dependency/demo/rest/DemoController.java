@@ -12,12 +12,14 @@ public class DemoController {
     private Coach myCoach;
 
     @Autowired
-    public DemoController(@Qualifier("baseballCoach") Coach theCoach) {
+    public DemoController(@Qualifier("cricketCoach") Coach theCoach) {
+        System.out.println("Constructor: " + this.getClass().getSimpleName());
         myCoach = theCoach;
     }
 
     @Autowired
-    public void setCoach(Coach coach) {
+    public void setCoach(@Qualifier("cricketCoach") Coach coach) {
+        System.out.println("In setCoach: " + this.getClass().getSimpleName());
         myCoach = coach;
     }
 
