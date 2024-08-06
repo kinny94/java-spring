@@ -22,6 +22,9 @@ public class CricketCoach implements Coach {
     }
 
     @PreDestroy
+    // Destroy method is not called on prototype scoped beans
+    // Spring does not manage the entire lifecycle of a prototyped scoped beans
+    // Client code must clean up after prototyped scope beans
     public void destroy() {
         System.out.println("In destroy method: " + this.getClass().getSimpleName());
     }

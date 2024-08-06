@@ -13,6 +13,7 @@ public class DemoController {
     private Coach anotherCoach;
     private Coach baseball;
     private Coach baseball2;
+    private Coach swimCoach;
 
 
     @Autowired
@@ -20,13 +21,15 @@ public class DemoController {
             @Qualifier("cricketCoach") Coach theCoach,
             @Qualifier("cricketCoach") Coach anAnotherCoach,
             @Qualifier("baseballCoach") Coach aBaseballCoach,
-            @Qualifier("baseballCoach") Coach anotherBaseBallCoach
+            @Qualifier("baseballCoach") Coach anotherBaseBallCoach,
+            @Qualifier("customSwimCoachId") Coach aSwimCoach
     ) {
         System.out.println("Constructor: " + this.getClass().getSimpleName());
         myCoach = theCoach;
         anotherCoach = anAnotherCoach;
         baseball = aBaseballCoach;
         baseball2 = anotherBaseBallCoach;
+        swimCoach = aSwimCoach;
     }
 
     @Autowired
