@@ -12,7 +12,7 @@ import java.util.List;
 public class StudentDAOImpl implements StudentDAO {
 
     // define field for entity manager
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     // inject entity manager using constructor injection
 
@@ -38,6 +38,13 @@ public class StudentDAOImpl implements StudentDAO {
     public List<Student> findAll() {
         // create query and return result
         TypedQuery<Student> query = entityManager.createQuery("FROM Student order by firstName", Student.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Student> findByLastName(String lastName) {
+        TypedQuery<Student> query = entityManager.createQuery("FROM Student where lastName=:data", Student.class);
+        query.setParameter("data", lastName);
         return query.getResultList();
     }
 

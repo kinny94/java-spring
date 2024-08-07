@@ -25,7 +25,16 @@ public class HibernateCrudApplication {
 			System.out.println("Found the student: " + studentTest);
 			List<Student> students = getAllStudents(studentDAO);
 			System.out.println(students);
+			getStudentsWithLastName(studentDAO, "Edwards");
 		};
+	}
+
+	private void getStudentsWithLastName(StudentDAO studentDAO, String lastName) {
+		System.out.println("Getting students with last name: " + lastName);
+		List<Student> students = studentDAO.findByLastName(lastName);
+		for (Student student : students) {
+			System.out.println(student);
+		}
 	}
 
 	private void createMultipleStudents(StudentDAO studentDAO) {
