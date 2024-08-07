@@ -24,4 +24,11 @@ public class StudentDAOImpl implements StudentDAO {
     public void save(Student student) {
         entityManager.persist(student);
     }
+
+    @Override
+    // Transaction is not required for read only
+    public Student findById(int id) {
+        return entityManager.find(Student.class, id);
+    }
+
 }

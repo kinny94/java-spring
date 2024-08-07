@@ -3,4 +3,5 @@ import com.spring.hibernatecrud.entity.Student;
 
 public interface StudentDAO {
     void save(Student student);
+    Student findById(int id);
 }

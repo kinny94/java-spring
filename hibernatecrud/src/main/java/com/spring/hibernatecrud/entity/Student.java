@@ -20,6 +20,16 @@ public class Student {
     @Column(name = "email")
     private String email;
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
     Student() {}
 
     public String getFirstName() {
