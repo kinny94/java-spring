@@ -26,7 +26,14 @@ public class HibernateCrudApplication {
 			List<Student> students = getAllStudents(studentDAO);
 			System.out.println(students);
 			getStudentsWithLastName(studentDAO, "Edwards");
+			Student updatedStudent = updateStudent(studentDAO, 3);
+			System.out.println(updatedStudent);
+			updateLastNameForAllStudentsWithCurryLastName(studentDAO, "Curry");
 		};
+	}
+
+	private void updateLastNameForAllStudentsWithCurryLastName(StudentDAO studentDAO, String updatedLastName) {
+		studentDAO.updateAllLastName(updatedLastName);
 	}
 
 	private void getStudentsWithLastName(StudentDAO studentDAO, String lastName) {
@@ -35,6 +42,15 @@ public class HibernateCrudApplication {
 		for (Student student : students) {
 			System.out.println(student);
 		}
+	}
+
+	private Student updateStudent(StudentDAO studentDAO, int id) {
+		System.out.println("Getting student with id: " + id);
+		Student student = getStudentWithId(studentDAO, id);
+		System.out.println("Updating student...");
+		student.setLastName("Curry");
+		System.out.println("Updating student...");
+		return studentDAO.update(student);
 	}
 
 	private void createMultipleStudents(StudentDAO studentDAO) {

@@ -1,6 +1,7 @@
 package com.spring.hibernatecrud.dao;
 import com.spring.hibernatecrud.entity.Student;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,6 +47,24 @@ public class StudentDAOImpl implements StudentDAO {
         TypedQuery<Student> query = entityManager.createQuery("FROM Student where lastName=:data", Student.class);
         query.setParameter("data", lastName);
         return query.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public Student update(Student student) {
+        return entityManager.merge(student);
+    }
+
+    @Override
+    @Transactional
+    public void updateAllLastName(String lastName) {
+        Query query = entityManager.createQuery(
+                "UPDATE Student s SET s.lastName = :newLastName WHERE s.lastName = :customName"
+        );
+        query.setParameter("newLastName", "Davis");
+        query.setParameter("customName", lastName);
+        int updates = query.executeUpdate();
+        System.out.println("Rows updated: " + updates);
     }
 
 }
