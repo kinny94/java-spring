@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @SpringBootApplication
 public class HibernateCrudApplication {
 
@@ -21,6 +23,8 @@ public class HibernateCrudApplication {
 //			createMultipleStudents(studentDAO);
 			Student studentTest = getStudentWithId(studentDAO, 2);
 			System.out.println("Found the student: " + studentTest);
+			List<Student> students = getAllStudents(studentDAO);
+			System.out.println(students);
 		};
 	}
 
@@ -54,5 +58,14 @@ public class HibernateCrudApplication {
 	private Student getStudentWithId(StudentDAO studentDAO, int id) {
 		System.out.println("Getting student with id " + id);
 		return studentDAO.findById(id);
+	}
+
+	private List<Student> getAllStudents(StudentDAO studentDAO) {
+		System.out.println("Getting all students...");
+		List<Student> students = studentDAO.findAll();
+		for (Student student : students) {
+			System.out.println(student.getFirstName() + " " + student.getLastName());
+		}
+		return studentDAO.findAll();
 	}
 }

@@ -1,9 +1,12 @@
 package com.spring.hibernatecrud.dao;
 import com.spring.hibernatecrud.entity.Student;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public class StudentDAOImpl implements StudentDAO {
@@ -29,6 +32,13 @@ public class StudentDAOImpl implements StudentDAO {
     // Transaction is not required for read only
     public Student findById(int id) {
         return entityManager.find(Student.class, id);
+    }
+
+    @Override
+    public List<Student> findAll() {
+        // create query and return result
+        TypedQuery<Student> query = entityManager.createQuery("FROM Student order by firstName", Student.class);
+        return query.getResultList();
     }
 
 }
