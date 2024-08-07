@@ -19,8 +19,9 @@ public class HibernateCrudApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
 		return runner -> {
-//			createStudent(studentDAO);
-//			createMultipleStudents(studentDAO);
+			setAutoIncrement(studentDAO);
+			createStudent(studentDAO);
+			createMultipleStudents(studentDAO);
 			Student studentTest = getStudentWithId(studentDAO, 2);
 			System.out.println("Found the student: " + studentTest);
 			List<Student> students = getAllStudents(studentDAO);
@@ -29,7 +30,26 @@ public class HibernateCrudApplication {
 			Student updatedStudent = updateStudent(studentDAO, 3);
 			System.out.println(updatedStudent);
 			updateLastNameForAllStudentsWithCurryLastName(studentDAO, "Curry");
+			createStudent(studentDAO);
+			Student deletedStudent = deleteStudent(studentDAO, 5);
+			System.out.println(deletedStudent);
+			System.out.println(deleteAllStudents(studentDAO) + " students deleted!!");
 		};
+	}
+
+	private void setAutoIncrement(StudentDAO studentDAO) {
+		System.out.println("Setting auto-increment to 1");
+		studentDAO.setAutoIncrement();
+	}
+
+	private int deleteAllStudents(StudentDAO studentDAO) {
+		System.out.println("Deleting all students...");
+		return studentDAO.deleteAllStudents();
+	}
+
+	private Student deleteStudent(StudentDAO studentDAO, int id) {
+		System.out.println("Deleting student with id: " + id);
+		return studentDAO.deleteById(id);
 	}
 
 	private void updateLastNameForAllStudentsWithCurryLastName(StudentDAO studentDAO, String updatedLastName) {

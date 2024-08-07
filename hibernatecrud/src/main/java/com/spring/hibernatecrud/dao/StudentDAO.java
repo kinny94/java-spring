@@ -10,4 +10,7 @@ public interface StudentDAO {
     List<Student> findByLastName(String lastName);
     Student update(Student student);
     void updateAllLastName(String lastName);
+    Student deleteById(int id);
+    int deleteAllStudents();
+    void setAutoIncrement();
 }

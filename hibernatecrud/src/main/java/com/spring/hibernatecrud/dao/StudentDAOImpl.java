@@ -67,4 +67,25 @@ public class StudentDAOImpl implements StudentDAO {
         System.out.println("Rows updated: " + updates);
     }
 
+    @Override
+    @Transactional
+    public Student deleteById(int id) {
+        Student student = entityManager.find(Student.class, id);
+        entityManager.remove(student);
+        return student;
+    }
+
+    @Override
+    @Transactional
+    public int deleteAllStudents() {
+        return entityManager.createQuery("DELETE FROM Student").executeUpdate();
+    }
+
+    @Override
+    @Transactional
+    public void setAutoIncrement() {
+        // alter table to set auto increment to 1
+        entityManager.createNativeQuery("ALTER TABLE Student AUTO_INCREMENT=1").executeUpdate();
+    }
+
 }
