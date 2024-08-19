@@ -9,35 +9,55 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class DemoSecurityConfig {
 
+//    @Bean
+//    public InMemoryUserDetailsManager userDetailsManager() {
+//        UserDetails kevin = User.builder()
+//                .username("kevin")
+//                .password("{noop}durant")
+//                .roles("EMPLOYEE")
+//                .build();
+//
+//        UserDetails lebron = User.builder()
+//                .username("lebron")
+//                .password("{noop}james")
+//                .roles("EMPLOYEE", "MANAGER")
+//                .build();
+//
+//        UserDetails jalen = User.builder()
+//                .username("jalen")
+//                .password("{noop}brunson")
+//                .roles("EMPLOYEE", "MANAGER", "ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(kevin, lebron, jalen);
+//    }
+
     @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        UserDetails kevin = User.builder()
-                .username("kevin")
-                .password("{noop}durant")
-                .roles("EMPLOYEE")
-                .build();
+    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-        UserDetails lebron = User.builder()
-                .username("lebron")
-                .password("{noop}james")
-                .roles("EMPLOYEE", "MANAGER")
-                .build();
+        // ? = user id parameter passed by the form
+        // define query to retrieve a user by username
+        jdbcUserDetailsManager.setUsersByUsernameQuery(
+                "select user_id, pw, active from members where user_id=?"
+        );
 
-        UserDetails jalen = User.builder()
-                .username("jalen")
-                .password("{noop}brunson")
-                .roles("EMPLOYEE", "MANAGER", "ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(kevin, lebron, jalen);
+        // define query to retrieve the authorities/ roles by username
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+                "select user_id, role from roles where user_id=?"
+        );
+        return jdbcUserDetailsManager;
     }
 
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         // Use HTTP Basic authentication
