@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+    <head>
+        <title>Student Registration form</title>
+        <link rel="stylesheet" th:href="@{/css/demo.css}" />
+    </head>
+
+    <style>
+        .error {
+            color:red;
+        }
+    </style>
+    <body>
+        <i>Fill out form. {*} means required.</i>
+        <br/><br/>
+        <form th:action="@{/processForm}" th:object="${customer}" method="post">
+            First name: <input type="text" th:field="*{firstName}" />
+            <br/><br/>
+            Last name (*): <input type="text" th:field="*{lastName}" />
+            <br/>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></span>
+            <br/><br/>
+            <input type="submit" value="Submit" />
+        </form>
+        <br/><br/>
+
+    </body>
+</html>
