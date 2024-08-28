@@ -9,5 +9,10 @@
     The student is confirmed: <span th:text="${student.firstName} + ' ' + ${student.lastName} + ' from ' + ${student.country}"></span>
     <br/>
     His preferred programming language is: <span th:text="${student.favoriteLanguage}"></span>
+    <br/>
+    Preferred OS is: <span th:text="${student.favoriteSystems}"/>
+    <ul>
+        <li th:each="system: ${student.favoriteSystems}" th:text="${system}"></li>
+    </ul>
 </body>
 </html>

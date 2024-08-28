@@ -6,6 +6,15 @@ public class Student {
     private String lastName;
     private String country;
     private String favoriteLanguage;
+    private String favoriteSystems;
+
+    public String getFavoriteSystems() {
+        return favoriteSystems;
+    }
+
+    public void setFavoriteSystems(String favoriteSystems) {
+        this.favoriteSystems = favoriteSystems;
+    }
 
     public String getFavoriteLanguage() {
         return favoriteLanguage;
