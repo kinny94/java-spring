@@ -1,13 +1,10 @@
 package com.jpa_hibernate_crud.jpa_hibernate;
 
 import com.jpa_hibernate_crud.jpa_hibernate.dao.AppDAO;
-import com.jpa_hibernate_crud.jpa_hibernate.entity.Course;
-import com.jpa_hibernate_crud.jpa_hibernate.entity.Instructor;
-import com.jpa_hibernate_crud.jpa_hibernate.entity.InstructorDetail;
+import com.jpa_hibernate_crud.jpa_hibernate.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
@@ -33,7 +30,20 @@ public class JpaHibernateApplication {
 			// getAllCourses(appDAO);
 			// getCourse(appDAO);
 			// findInstructorWithCourse(appDAO);
-			findCoursesByInstructor(appDAO);
+			// findCoursesByInstructor(appDAO);
+			// findInstructorByIdJoinFetch(appDAO);
+			// updateInstructor(appDAO);
+			// updateCourse(appDAO);
+			// deleteInstructorButKeepCourse(appDAO);
+			// deleteCourse(appDAO);
+			// createCourseAndReviews(appDAO);
+			// getCourseAndReviews(appDAO);
+			// deleteCourseAndReviews(appDAO);
+			// createCourseAndStudents(appDAO);
+			// findCourseAndStudentsById(appDAO);
+			// findStudentAndCoursesByStudentId(appDAO);
+			// addMoreCoursesToStudent(appDAO);
+			deleteStudent(appDAO);
 		};
 	}
 
@@ -57,7 +67,7 @@ public class JpaHibernateApplication {
 	private void deleteInstructor(AppDAO appDAO) {
 		int id = 3;
 		System.out.println("Deleting " + id);
-		appDAO.delete(id);
+		appDAO.deleteInstructor(id);
 		System.out.println("Done deleting " + id);
 	}
 
@@ -128,6 +138,124 @@ public class JpaHibernateApplication {
 		List<Course> courseList = appDAO.findCourseByInstructorId(instructor.getId());
 		instructor.setCourses(courseList);
 		System.out.println("Associated courses " + instructor.getCourses());
+		System.out.println("Done");
+	}
+
+	private void findInstructorByIdJoinFetch(AppDAO appDAO) {
+		int id = 1;
+		System.out.println("findInstructorByIdJoinFetch " + id);
+		Instructor instructor = appDAO.findInstructorByIdJoinFetch(id);
+		System.out.println(instructor);
+		System.out.println("Associated course " + instructor.getCourses());
+		System.out.println("Done!");
+	}
+
+	private void updateInstructor(AppDAO appDAO) {
+		int id = 1;
+		System.out.println("Finding the instructor " + id);
+		Instructor instructor = appDAO.getInstructor(id);
+		System.out.println("Updating " + instructor);
+		instructor.setFirstName("Benjamin");
+		appDAO.updateStudent(instructor);
+		System.out.println("Done updating " + instructor);
+	}
+
+	private void updateCourse(AppDAO appDAO) {
+		int id = 11;
+		System.out.println("Finding the course " + id);
+		Course course = appDAO.getCourse(id);
+		System.out.println("Updating " + course);
+		course.setTitle("How to get miss entire season twice!");
+		appDAO.updateCourse(course);
+		System.out.println("Done updating " + course);
+	}
+
+	private void addedNewInstructor(AppDAO appDAO) {
+		Instructor instructor = new Instructor("Paul@George.com", "George", "Paul");
+		InstructorDetail instructorDetail = new InstructorDetail("Basketball", "www.google.com");
+		Course course = new Course("How to shoot 3pt 101");
+		instructor.add(course);
+		instructor.setInstructorDetail(instructorDetail);
+		appDAO.save(instructor);
+	}
+
+	private void deleteInstructorButKeepCourse(AppDAO appDAO) {
+		appDAO.deleteInstructor(4);
+	}
+
+	private void deleteCourse(AppDAO appDAO) {
+		int id = 12;
+		appDAO.deleteCourse(id);
+	}
+
+	private void createCourseAndReviews(AppDAO appDAO) {
+		Course course = new Course("How to stat pad?");
+		course.addReview(new Review("Sad Course....!"));
+		course.addReview(new Review("Caitlin Better....!"));
+		course.addReview(new Review("Own Rebound machine....!"));
+		System.out.println("Saving " + course);
+		appDAO.saveCourse(course);
+		System.out.println("Done saving " + course);
+	}
+
+	private void getCourseAndReviews(AppDAO appDAO) {
+		int id = 10;
+		System.out.println("findCourseAndReviews " + id);
+		Course course = appDAO.findCourseAndReviewsById(id);
+		System.out.println("Course " + course);
+		System.out.println(course.getReviews());
+	}
+
+	private void deleteCourseAndReviews(AppDAO appDAO) {
+		int id = 10;
+		System.out.println("Deleting " + id);
+		appDAO.deleteCourse(id);
+		System.out.println("Done");
+	}
+
+	private void createCourseAndStudents(AppDAO appDAO) {
+		Course course = new Course("How to stat pad?");
+		Student student = new Student("Paul", "George", "Paul@George.com");
+		Student student1 = new Student("Russel", "Westbrook", "Russel@Westbrook.com");
+		course.addStudent(student);
+		course.addStudent(student1);
+		System.out.println("Saving " + course);
+		System.out.println("Saving associated students " + course.getStudents());
+		appDAO.saveCourse(course);
+		System.out.println("Done saving " + course);
+	}
+
+	private void findCourseAndStudentsById(AppDAO appDAO) {
+		int id = 10;
+		Course course = appDAO.findCourseAndStudentsByCourseId(id);
+		System.out.println("Course " + course);
+		System.out.println("Students " + course.getStudents());
+	}
+
+	private void findStudentAndCoursesByStudentId(AppDAO appDAO) {
+		int id = 1;
+		Student student = appDAO.findStudentAndCoursesByStudentId(id);
+		System.out.println("Student " + student);
+		System.out.println("Courses " + student.getCourses());
+	}
+
+	private void addMoreCoursesToStudent(AppDAO appDAO) {
+		int id = 1;
+		Student student = appDAO.findStudentAndCoursesByStudentId(id);
+		Course course = new Course("How to miss layups");
+		Course course2 = new Course("How to travel");
+		student.addCourse(course);
+		student.addCourse(course2);
+		System.out.println("Updating " + student);
+		appDAO.updateStudent(student);
+		System.out.println("Done updating " + student);
+		System.out.println("Associated courses " + student.getCourses());
+	}
+
+	private void deleteStudent(AppDAO appDAO) {
+		int id = 2;
+		System.out.println("Deleting " + id);
+		appDAO.deleteStudent(id);
 		System.out.println("Done");
 	}
 }

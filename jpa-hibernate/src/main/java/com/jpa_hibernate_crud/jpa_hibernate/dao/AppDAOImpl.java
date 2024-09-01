@@ -3,6 +3,7 @@ package com.jpa_hibernate_crud.jpa_hibernate.dao;
 import com.jpa_hibernate_crud.jpa_hibernate.entity.Course;
 import com.jpa_hibernate_crud.jpa_hibernate.entity.Instructor;
 import com.jpa_hibernate_crud.jpa_hibernate.entity.InstructorDetail;
+import com.jpa_hibernate_crud.jpa_hibernate.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,13 @@ public class AppDAOImpl implements AppDAO {
 
     @Override
     @Transactional
-    public void delete(int id) {
+    public void deleteInstructor(int id) {
         Instructor instructor = entityManager.find(Instructor.class, id);
+        List<Course> courses = instructor.getCourses();
+        // if you don't remove this relation then you will get that constraint violation error
+        for (Course course : courses) {
+            course.setInstructor(null);
+        }
         entityManager.remove(instructor);
     }
 
@@ -78,5 +84,83 @@ public class AppDAOImpl implements AppDAO {
         query.setParameter("data", id);
         List<Course> courses = query.getResultList();
         return courses;
+    }
+
+    @Override
+    public Instructor findInstructorByIdJoinFetch(int id) {
+        TypedQuery<Instructor> query = entityManager.createQuery(
+                "select i from Instructor i JOIN FETCH i.courses JOIN FETCH i.instructorDetail where i.id=:data", Instructor.class
+        );
+        query.setParameter("data", id);
+        Instructor instructor = query.getSingleResult();
+        return instructor;
+    }
+
+    @Override
+    @Transactional
+    public void updateStudent(Instructor instructor) {
+        entityManager.merge(instructor);
+    }
+
+    @Override
+    @Transactional
+    public void updateCourse(Course course) {
+        entityManager.merge(course);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCourse(int id) {
+        Course course = entityManager.find(Course.class, id);
+        entityManager.remove(course);
+    }
+
+    @Override
+    @Transactional
+    public void saveCourse(Course course) {
+        entityManager.persist(course);
+    }
+
+    @Override
+    public Course findCourseAndReviewsById(int id) {
+        TypedQuery<Course> query = entityManager.createQuery(
+                "select c from Course c JOIN FETCH c.reviews where c.id=:id", Course.class
+        );
+        query.setParameter("id", id);
+        Course course = query.getSingleResult();
+        return course;
+    }
+
+    @Override
+    public Course findCourseAndStudentsByCourseId(int id) {
+        TypedQuery<Course> query = entityManager.createQuery(
+                "select c from Course c JOIN FETCH c.students where c.id=:id", Course.class
+        );
+        query.setParameter("id", id);
+        Course course = query.getSingleResult();
+        return course;
+    }
+
+    @Override
+    public Student findStudentAndCoursesByStudentId(int id) {
+        TypedQuery<Student> query = entityManager.createQuery(
+                "select s from Student s JOIN FETCH s.courses where s.id=:id", Student.class
+        );
+        query.setParameter("id", id);
+        Student student = query.getSingleResult();
+        return student;
+    }
+
+    @Override
+    @Transactional
+    public void updateStudent(Student student) {
+        entityManager.merge(student);
+    }
+
+    @Override
+    @Transactional
+    public void deleteStudent(int id) {
+        Student student = entityManager.find(Student.class, id);
+        entityManager.remove(student);
     }
 }
