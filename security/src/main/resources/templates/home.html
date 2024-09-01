@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title>Home</title>
+    </head>
+    <body>
+        <h2>Welcome to the comapany's home page</h2>
+        <hr/>
+        <p>
+            Hope you are having a good day
+        </p>
+        <hr>
+        <p>
+            User: <span sec:authentication="principal.username"></span>
+            <br/><br/>
+            Role(s): <span sec:authentication="principal.authorities"></span>
+        </p>
+        <form method="POST" action="#" th:action="@{/logout}">
+            <input type="submit" value="Logout" />
+        </form>
+    </body>
+</html>
